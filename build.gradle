@@ -1,0 +1,83 @@
+plugins {
+    id 'org.springframework.boot' version '2.3.5.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'java'
+    id 'pmd'
+}
+
+"git config core.hooksPath .githooks".execute()
+
+group = 'com.demo'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+pmd {
+    toolVersion = "6.15.0"
+    ruleSets = []
+    sourceSets = [sourceSets.main, sourceSets.test]
+}
+
+pmdMain {
+    ruleSetConfig = resources.text.fromFile("config/pmd/ruleset-main.xml")
+}
+pmdTest {
+    ruleSetConfig = resources.text.fromFile("config/pmd/ruleset-test.xml")
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    pmd 'com.alibaba.p3c:p3c-pmd:2.1.1'
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'mysql:mysql-connector-java'
+    implementation 'com.google.guava:guava'
+    implementation 'io.github.openfeign:feign-okhttp'
+    implementation 'com.github.xiaoymin:knife4j-spring-boot-starter:2.0.8'
+    implementation 'org.springframework.cloud:spring-cloud-starter-kubernetes-config'
+    implementation 'org.mapstruct:mapstruct:1.4.1.Final'
+    implementation 'org.apache.commons:commons-lang3'
+    implementation 'org.apache.commons:commons-collections4:4.1'
+    implementation 'com.auth0:java-jwt:3.11.0'
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'commons-codec:commons-codec:1.4'
+    implementation 'org.reflections:reflections:0.9.11'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor(
+            "javax.annotation:javax.annotation-api",
+            'org.projectlombok:lombok',
+            'org.mapstruct:mapstruct-processor:1.4.1.Final'
+    )
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation 'com.tngtech.archunit:archunit-junit5:0.14.1'
+    testImplementation ('io.rest-assured:spring-mock-mvc:3.3.0') {
+        exclude group: 'com.sun.xml.bind', module: 'jaxb-osgi'
+    }
+    testImplementation 'io.rest-assured:rest-assured:3.3.0'
+    testImplementation "org.testcontainers:testcontainers:1.15.0"
+    testImplementation "org.testcontainers:junit-jupiter:1.15.0"
+    testImplementation "org.springframework.security:spring-security-test"
+    testImplementation "org.testcontainers:mysql:1.15.0"
+    testImplementation "com.sun.xml.bind:jaxb-osgi:2.3.0"
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+}
+
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR9"
+    }
+}
+
+test {
+    useJUnitPlatform()
+}

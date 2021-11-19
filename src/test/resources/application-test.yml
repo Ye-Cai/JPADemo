@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://mysql-service:30006/ftms-local-test?useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+  jpa:
+    properties:
+      hibernate.format_sql: true
+      hibernate.enable_lazy_load_no_trans: true
+    show-sql: true
